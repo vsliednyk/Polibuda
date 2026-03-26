@@ -44,6 +44,7 @@ public class MainController {
     @FXML private TextArea plainTextArea;
     @FXML private TextField savePlainPathField;
     @FXML private Button savePlainBtn;
+    @FXML private Label plainStatusTitle;
 ///  Przyciski
     @FXML private Button encryptBtn;
     @FXML private Button decryptBtn;
@@ -56,6 +57,9 @@ public class MainController {
     @FXML private TextArea cipherTextArea;
     @FXML private TextField saveCipherPathField;
     @FXML private Button saveCipherBtn;
+    @FXML private Label cipherStatusTitle;
+
+
 
 ///
 /// Funkcja inicjujaca , przypisujaca eventy
@@ -69,10 +73,16 @@ public class MainController {
             boolean isFileMode = fileModeRadio.isSelected();
             plainTextArea.setDisable(isFileMode);
             cipherTextArea.setDisable(isFileMode);
+            openPlainPathField.setDisable(!isFileMode);
+            openCipherPathField.setDisable(!isFileMode);
+            openPlainBtn.setDisable(!isFileMode);
+            openCipherBtn.setDisable(!isFileMode);
         });
 
         plainTextArea.setDisable(true);
         cipherTextArea.setDisable(true);
+        plainStatusTitle.setText("Test plain");
+        cipherStatusTitle.setText("Test cipher");
     }
 
     private void handleGenerateKeys() {

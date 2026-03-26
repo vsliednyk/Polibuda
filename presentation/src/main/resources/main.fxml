@@ -11,10 +11,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <!--Glowne okno napisane w javaFX przy uzyciu SceneBuildera-->
 
-<VBox fx:controller="kryptografia.MainController" prefHeight="650.0" prefWidth="950.0" spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="650.0" prefWidth="950.0" spacing="10.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kryptografia.MainController">
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
@@ -47,11 +48,11 @@
 
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                 <Label text="Wczytaj klucze z pliku" />
-                <TextField fx:id="loadKeyPathField" promptText="Nazwa pliku kluczy" prefWidth="150.0" />
+                <TextField fx:id="loadKeyPathField" prefWidth="150.0" promptText="Nazwa pliku kluczy" />
                 <Button fx:id="loadKeyBtn" text="Wczytaj" />
 
                 <Region HBox.hgrow="ALWAYS" /> <Label text="Zapisz klucze do pliku" />
-                <TextField fx:id="saveKeyPathField" promptText="Nazwa pliku kluczy" prefWidth="150.0" />
+                <TextField fx:id="saveKeyPathField" prefWidth="150.0" promptText="Nazwa pliku kluczy" />
                 <Button fx:id="saveKeyBtn" text="Zapisz" />
             </HBox>
         </VBox>
@@ -63,8 +64,18 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
 
-            <VBox spacing="10.0" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308">
+            <VBox maxWidth="1.7976931348623157E308" spacing="10.0" HBox.hgrow="ALWAYS">
                 <Label text="Otwórz plik zawierający tekst jawny" />
+            <HBox prefHeight="15.0" prefWidth="369.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="65.0" text="Status : " />
+                  <Label fx:id="plainStatusTitle" prefHeight="17.0" prefWidth="327.0" text="Nic nie wprowadzono">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
                 <HBox spacing="5.0">
                     <TextField fx:id="openPlainPathField" promptText="Nazwa pliku z tekstem jawnym" HBox.hgrow="ALWAYS" />
                     <Button fx:id="openPlainBtn" text="Otwórz" />
@@ -79,21 +90,34 @@
                 </HBox>
             </VBox>
 
-            <VBox alignment="CENTER" spacing="20.0" minWidth="130.0">
-                <Button fx:id="encryptBtn" text="Szyfruj ->" prefWidth="110.0" />
-                <Button fx:id="decryptBtn" text="&lt;- Deszyfruj" prefWidth="110.0" />
+            <VBox alignment="CENTER" minWidth="130.0" spacing="20.0">
+                <Button fx:id="encryptBtn" prefWidth="110.0" text="Szyfruj -&gt;" />
+                <Button fx:id="decryptBtn" prefWidth="110.0" text="&lt;- Deszyfruj" />
 
-                <VBox alignment="CENTER_LEFT" spacing="10.0" maxWidth="80.0">
+                <VBox alignment="CENTER_LEFT" maxWidth="80.0" spacing="10.0">
                     <fx:define>
                         <ToggleGroup fx:id="modeToggleGroup" />
                     </fx:define>
-                    <RadioButton fx:id="fileModeRadio" selected="true" text="Plik" toggleGroup="$modeToggleGroup" />
+                    <RadioButton fx:id="fileModeRadio" selected="true" text="Plik">
+                  <toggleGroup>
+                     <ToggleGroup fx:id="modeToggleGroup" />
+                  </toggleGroup></RadioButton>
                     <RadioButton fx:id="windowModeRadio" text="Okno" toggleGroup="$modeToggleGroup" />
                 </VBox>
             </VBox>
 
-            <VBox spacing="10.0" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308">
+            <VBox maxWidth="1.7976931348623157E308" spacing="10.0" HBox.hgrow="ALWAYS">
                 <Label text="Otwórz plik zawierający szyfrogram" />
+            <HBox prefHeight="15.0" prefWidth="369.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="61.0" text="Status : " />
+                  <Label fx:id="cipherStatusTitle" prefHeight="17.0" prefWidth="327.0" text="Nic nie wprowadzono">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
                 <HBox spacing="5.0">
                     <TextField fx:id="openCipherPathField" promptText="Nazwa pliku z szyfrogramem" HBox.hgrow="ALWAYS" />
                     <Button fx:id="openCipherBtn" text="Otwórz" />
