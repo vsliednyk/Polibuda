@@ -98,10 +98,8 @@
                     <fx:define>
                         <ToggleGroup fx:id="modeToggleGroup" />
                     </fx:define>
-                    <RadioButton fx:id="fileModeRadio" selected="true" text="Plik">
-                  <toggleGroup>
-                     <ToggleGroup fx:id="modeToggleGroup" />
-                  </toggleGroup></RadioButton>
+
+                    <RadioButton fx:id="fileModeRadio" selected="true" text="Plik" toggleGroup="$modeToggleGroup" />
                     <RadioButton fx:id="windowModeRadio" text="Okno" toggleGroup="$modeToggleGroup" />
                 </VBox>
             </VBox>
