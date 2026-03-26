@@ -14,12 +14,14 @@
  */
 
 package kryptografia.exceptions;
-
-public class KryptografiaException extends RuntimeException {
-    public KryptografiaException(String message) {
+///
+/// @see kryptografia.exceptions.KException
+///
+public class KFileToBytesException extends KException {
+    public KFileToBytesException(String message) {
         super(message);
     }
-    public KryptografiaException(String message, Throwable cause) {
+    public KFileToBytesException(String message, Throwable cause) {
         super(message, cause);
     }
 }

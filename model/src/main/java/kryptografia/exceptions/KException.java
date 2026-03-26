@@ -13,11 +13,18 @@
  * GNU General Public License for more details.
  */
 
-package kryptografia;
-
-import java.io.File;
-import java.io.IOException;
-
-
-public class FileAction {
+package kryptografia.exceptions;
+///
+/// Custom exception
+/// @see java.io.Serializable
+/// @see java.lang.Exception
+/// @see java.lang.RuntimeException
+/// @see java.lang.Throwable
+public class KException extends RuntimeException {
+    public KException(String message) {
+        super(message);
+    }
+    public KException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
