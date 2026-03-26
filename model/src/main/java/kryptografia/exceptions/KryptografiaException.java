@@ -13,11 +13,13 @@
  * GNU General Public License for more details.
  */
 
-package kryptografia;
+package kryptografia.exceptions;
 
-import java.io.File;
-import java.io.IOException;
-
-
-public class FileAction {
+public class KryptografiaException extends RuntimeException {
+    public KryptografiaException(String message) {
+        super(message);
+    }
+    public KryptografiaException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
