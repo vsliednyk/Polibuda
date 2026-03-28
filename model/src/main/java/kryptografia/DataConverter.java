@@ -109,7 +109,7 @@ public class DataConverter {
         byte[] extendedData = new byte[data.length + paddingLength];
 
 
-        System.arraycopy(data, 0, extendedData, 0, data.length); // From | Exact pos | To | Exact pos | amount to copy
+        System.arraycopy(data, 0, extendedData, 0, data.length); // From | F:Exact pos | To | T:Exact pos | amount to copy
 
         for (int i = 0; i < paddingLength; i++) {
             extendedData[data.length + i] = (byte) paddingLength;
