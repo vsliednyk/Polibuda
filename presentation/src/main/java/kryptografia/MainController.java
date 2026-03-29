@@ -83,6 +83,7 @@ public class MainController {
         cipherTextArea.setDisable(true);
         plainStatusTitle.setText("Test plain");
         cipherStatusTitle.setText("Test cipher");
+
     }
 
     private void handleGenerateKeys() {
@@ -103,4 +104,6 @@ public class MainController {
         System.out.println("Kliknięto: <- Deszyfruj");
         // TODO: Logika deszyfrowania
     }
+
+
 }

@@ -20,9 +20,12 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Base64;
 import kryptografia.exceptions.*;
+import kryptografia.exceptions.DES.KDNoSHAAlgorythmException;
 
 ///
 /// Klasa narzedziowa klasa statyczna
@@ -35,7 +38,7 @@ public class DataConverter {
 ///
 /// Funkcja konwertujaca plik na bajty
 /// @param filePath Sciezka do pliku
-/// @return byte[]
+/// @return {@code byte[]}
 /// @throws KFileToBytesException
     public static byte[] fileToBytes(String filePath){
         try {
@@ -61,7 +64,7 @@ public class DataConverter {
     /// Funkcja konwertujaca tekst na bajty przy
     /// @implNote Uzywa charset UTF8
     /// @param text tekst do konwersji
-    /// @return byte[]
+    /// @return {@code byte[]}
     /// @throws KTextToBytesException
     public static byte[] textToBytes(String text){
         try{
@@ -74,7 +77,7 @@ public class DataConverter {
 ///
 /// Funkcja zamieniajaca bajty w tekst
 /// @param data bajty do przerobienia
-/// @return String
+/// @return {@code String}
 /// @throws KBytesToTextException
     public static String bytesToText(byte[] data){
         try{
@@ -87,14 +90,14 @@ public class DataConverter {
 ///
 /// Funkcja do przekonwertowania tablicy bajtow na tekst o kodowaniu Base64
 /// @param data tablica bajtow do zakodowania
-/// @return String
+/// @return 
     public static String bytesToBase64(byte[] data) {
         return Base64.getEncoder().encodeToString(data);
     }
     ///
     /// Funkcja do przekonwertowania tesktu o kodowaniu Base64 na tablice bajtow
     /// @param base64Text Tekst o kodowaniu Base64
-    /// @return byte[]
+    /// @return {@code byte[]}
     public static byte[] base64ToBytes(String base64Text) {
         return Base64.getDecoder().decode(base64Text);
     }
@@ -102,7 +105,7 @@ public class DataConverter {
 ///
 /// Funkcja pomagajaca rozszerzyc podana tablice bajtow do bloku o rozmiarze 8
 /// @param data tablcia bajtow ktora trzeba rozszerzyc
-/// @return byte[]
+/// @return {@code byte[]}
     public static byte[] addPKCS7DESPadding(byte[] data){
         int blockSize = 8; // DES wymaga rozmiaz 64 bity -> 8 bajtów
         int paddingLength = blockSize - (data.length % blockSize);
@@ -119,7 +122,7 @@ public class DataConverter {
 ///
 /// Funkcja usuwajaca zbedne bajty po rozszerzeniu do bloku o rozmiarze 8
 /// @param data tablica bajtow do zmniejszenia
-/// @return byte[]
+/// @return {@code byte[]}
     public static byte[] removePKCS7DESPadding(byte[] data){
         if (data == null || data.length == 0) {
             return data;
@@ -131,6 +134,33 @@ public class DataConverter {
             return Arrays.copyOfRange(data, 0, data.length - paddingLength);
         }
         return data;
+    }
+
+    /// Funkcja pozwalajaca na uzycie dowolnego hasla
+    /// @param pass dowolny tekst podany jako haslo
+    /// @return {@code byte[]} Zwraca tablice bajtow
+    /// @throws KDNoSHAAlgorythmException
+    ///
+    private static byte[] sha256(String pass){
+        try {
+            return MessageDigest.getInstance("SHA-256").digest(pass.getBytes(StandardCharsets.UTF_8));
+        } catch (NoSuchAlgorithmException e) {
+            throw new KDNoSHAAlgorythmException("No SHA-256 algorithm found.", e);
+        }
+    }
+    /// Funkcja do obcinania bajtow
+    /// @implNote Korzysta z {@link #sha256(String)}
+    /// @param key dowolny tekst
+    /// @return
+    public static byte[] extract8KeyBytes (String key){
+        try{
+            byte[] wynik = new byte[8];
+            System.arraycopy(DataConverter.sha256(key),0,wynik,0,8);
+            return wynik;
+        }
+        catch(KDNoSHAAlgorythmException e){
+            throw new KException("SHA-256 algorithm not found.", e);
+        }
     }
 
 }
