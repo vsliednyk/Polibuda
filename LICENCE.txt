@@ -1,5 +1,5 @@
 GNU - General Public License v2
-Sliednyk Viktor & Igor Wiktorowicz
+Copyright (C) 2026 Igor Wiktorowicz & Viktor Sliednyk
 
 Everyone is permitted to copy and distribute verbatim copies
 of this license document, but changing it is not allowed.
