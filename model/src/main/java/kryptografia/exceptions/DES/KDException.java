@@ -13,11 +13,14 @@
  * GNU General Public License for more details.
  */
 
-package kryptografia.exceptions;
+package kryptografia.exceptions.DES;
+
+import kryptografia.exceptions.KException;
+
 ///
 /// @see kryptografia.exceptions.KException
 /// @implNote Ten wyjatek sluzy do wykazania specyficznych bledow w funkconalnosci DES'a
-public class KDException extends KException{
+public abstract class KDException extends KException {
     public KDException(String message) {
         super(message);
     }

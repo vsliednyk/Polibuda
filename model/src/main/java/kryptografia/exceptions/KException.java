@@ -20,6 +20,7 @@ package kryptografia.exceptions;
 /// @see java.lang.Exception
 /// @see java.lang.RuntimeException
 /// @see java.lang.Throwable
+///
 public class KException extends RuntimeException {
     public KException(String message) {
         super(message);
