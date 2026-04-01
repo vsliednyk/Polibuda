@@ -20,7 +20,10 @@ public class DES {
 
     //Podklucze
     private byte[][] subKeys = new byte[16][48];
-
+    ///
+    /// Konstruktor ktore laduje haslo do klasy DES dla optymizacji obliczen
+    /// @param password Haslo o rozmiarze 64 bitow
+    /// @implNote W {@link #subKeys} przechowuja sie klucze poszczegolnych rund
     public DES(String password){
 
         byte[] key = DataConverter.extract8KeyBytes(password);
@@ -30,7 +33,7 @@ public class DES {
         byte[] rightKey = new byte[28];
 
         System.arraycopy(key56, 0, leftKey, 0, 28);
-        System.arraycopy(keyBits, 28, rightKey, 0, 28);
+        System.arraycopy(key56, 28, rightKey, 0, 28);
         for(int i = 0; i < 16; i++){
             leftKey = rotateLeft(leftKey,SHIFTS[i]);
             rightKey = rotateLeft(rightKey,SHIFTS[i]);
@@ -176,7 +179,13 @@ public class DES {
 
 
 
-
+/// Glowna funkcja do szyfrowania bloku danych
+///
+/// @param data8ByteBlock Blok o rozmiarze 8 bajtow podawane przez klase spinajaca
+/// @return {@code byte[]} zaszyfrowany blok o rozmiarze 8 bajtow
+/// @implNote Zaklada sie ze calosc podzialu na bloki oraz wszystkie iteracje zostana podjete w klasie TripleDES
+/// Do tej klasy sie podaje czyste bloki o rozmiarze 8 bajtow
+/// Gowna zasada tej fynkcji jest dzialanie na bitach zamiast bajtow (Uzywa sie : {@link #unpackBits(byte[])} oraz {@link #packBits(byte[])})
     public byte[] encryptBlock(byte[] data8ByteBlock) {
         byte[] bits = unpackBits(data8ByteBlock);
         //Initial permutation
@@ -205,12 +214,39 @@ public class DES {
         return packBits(result);
     }
 
-    //TODO: musimy napisac definicje odwrotna
-    public byte[] decryptBlock(byte[] data) {
-        return new byte[0];
+    /// Funkcja deszyfrujaca blok o rozmiarze 8 bajtow
+    /// @param data8ByteBlock Blok o rozmiarze 8 bajtow podawane przez klase spinajaca
+    /// @return {@code byte[]} odszyfrowany blok o rozmiarze 8 bajtow
+    /// @implNote Zaklada sie ze calosc podzialu na bloki oraz wszystkie iteracje zostana podjete w klasie TripleDES
+    /// Do tej klasy sie podaje czyste bloki o rozmiarze 8 bajtow
+    /// Gowna zasada tej fynkcji jest dzialanie na bitach zamiast bajtow (Uzywa sie : {@link #unpackBits(byte[])} oraz {@link #packBits(byte[])})
+    public byte[] decryptBlock(byte[] data8ByteBlock) {
+    byte[] bits = unpackBits(data8ByteBlock);
+    bits = permute(bits, IP);
+        byte[] L = new byte[32];
+        byte[] R = new byte[32];
+        System.arraycopy(bits, 0, L, 0, 32);
+        System.arraycopy(bits, 32, R, 0, 32);
+        for(int i = 15; i>=0 ; i--){
+            byte[] prevL = L;
+            L = R;
+            byte[] resultAfterF = functionF(R,subKeys[i]);
+            R = XOR(prevL, resultAfterF, 32);
+        }
+        byte[] finalResult = new byte[64];
+        System.arraycopy(R, 0, finalResult, 0, 32);
+        System.arraycopy(L, 0, finalResult, 32, 32);
+        byte[] result = permute(finalResult, FP);
+        return packBits(result);
     }
 
 
+
+    /// Funkcja "Des round function" wewnatrz DES'a
+    /// @param rightSide dane o glugosci 32 bitow
+    /// @param roundKey klucz danej rundy o dlugosci 48 bitow
+    /// @return {@code byte[32]} zwraca dane po SBox'ach czyli w postacio 32 bitow
+    /// @implNote Uzywa funkcji XOR : {@link #XOR(byte[], byte[], int)}
     private byte[] functionF(byte[] rightSide, byte[] roundKey){
         byte[] expandedRightSide = permute(rightSide, E);
 
@@ -234,10 +270,10 @@ public class DES {
             poSBox[i*4] = (byte) ((valueZBox >> 3) & 1);
             poSBox[i*4+1] = (byte) ((valueZBox >> 2) & 1);
             poSBox[i*4+2] = (byte) ((valueZBox >> 1) & 1);
-            poSBox[i*4+3] = (byte) ((valueZBox << 1) & 1);
+            poSBox[i*4+3] = (byte) (valueZBox & 1);
         }
 
-        return poSBox;
+        return permute(poSBox, P);
 
 
     }
@@ -308,7 +344,7 @@ public class DES {
         byte[] result = new byte[entrance.length*8];
         for(int i = 0; i < entrance.length; i++){
             for(int j = 0; j < 8; j++){
-                result[i*8+j] = (byte)((entrance[i]>>(j-1) )& 1);//zawsze bierze tylko najmlodszy bit ,
+                result[i*8+j] = (byte)((entrance[i]>>(7-j) )& 1);//zawsze bierze tylko najmlodszy bit ,
                 // wlasciwie gdzie przesuwamy wartosc bitu z bajtu o danym indeksie
             }
         }
@@ -321,7 +357,7 @@ public class DES {
     /// @return byte[]
     private byte[] packBits(byte[] entrance){
         byte[] result = new byte[entrance.length/8];
-        for(int i = 0; i < entrance.length; i++){
+        for(int i = 0; i < result.length; i++){
             int intByte=0;
             for(int j = 0; j < 8; j++){
                 intByte = (intByte<<1) | (entrance[i*8+j]); // Int reprezentuje nasz byte
