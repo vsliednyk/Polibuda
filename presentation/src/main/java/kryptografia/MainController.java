@@ -60,14 +60,14 @@ public class MainController {
     @FXML private Label cipherStatusTitle;
 
 
-
+//TODO: Glowne zrodlo skad bede bral wiedze jak podpinac eventy
 ///
 /// Funkcja inicjujaca , przypisujaca eventy
     @FXML
     public void initialize() {
-        generateKeysBtn.setOnAction(event -> handleGenerateKeys());
-        encryptBtn.setOnAction(event -> handleEncrypt());
-        decryptBtn.setOnAction(event -> handleDecrypt());
+//        generateKeysBtn.setOnAction(event -> handleGenerateKeys());
+//        encryptBtn.setOnAction(event -> handleEncrypt());
+//        decryptBtn.setOnAction(event -> handleDecrypt());
 
         modeToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             boolean isFileMode = fileModeRadio.isSelected();
@@ -81,29 +81,45 @@ public class MainController {
 
         plainTextArea.setDisable(true);
         cipherTextArea.setDisable(true);
-        plainStatusTitle.setText("Test plain");
-        cipherStatusTitle.setText("Test cipher");
+        plainStatusTitle.setText("Nic nie wgrano");
+        cipherStatusTitle.setText("Nic nie wgrano");
 
     }
 
-    private void handleGenerateKeys() {
-        System.out.println("Kliknięto: Generuj klucze");
-        // TODO: Wywołanie generatora z modułu model i wpisanie wyników do key1Field, key2Field, key3Field
-    }
-
-    private void handleEncrypt() {
-        System.out.println("Kliknięto: Szyfruj ->");
-        if (fileModeRadio.isSelected()) {
-            System.out.println("Wybrano tryb PLIK. Szyfruję plik...");
-        } else {
-            System.out.println("Wybrano tryb OKNO. Szyfruję tekst...");
-        }
-    }
-
-    private void handleDecrypt() {
-        System.out.println("Kliknięto: <- Deszyfruj");
-        // TODO: Logika deszyfrowania
-    }
 
 
+
+    private void handleGenerateKeys(){};
+
+    private void handleReadKeysFromFile(){};
+    private void handleWriteKeysToFile(){};
+
+    private void handleOpenPlainFile(){};
+    private void handleSavePlainFile(){};
+
+    private void handleOpenCipherFile(){}
+    private void handleSaveCipherFile(){}
+
+    private void handleEncrypt(){};
+    private void handleDecrypt(){};
+
+    // Windows events???
+    private void handleWindowKey1TextChanged(){};
+    private void handleWindowKey2TextChanged(){};
+    private void handleWindowKey3TextChanged(){};
+
+
+    private void handleWindowReadKeysFromFileTextChanged(){};
+    private void handleWindowSaveKeysToFileTextChanged(){};
+
+
+    private void handleWindowOpenPlainFileTextChanged(){};
+    private void handleWindowSavePlainFileTextChanged(){};
+
+
+    private void handleWindowOpenCipherFileTextChanged(){};
+    private void handleWindowSaveCipherFileTextChanged(){};
+
+
+    private void statusChange(int code){}
 }
