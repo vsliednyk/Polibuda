@@ -33,6 +33,8 @@ public class TripleDES {
 /// Funkcja do zaszyfrowania danych podawanych jako bajtow
 /// @param data dowolne dane podane w bajtach
 /// @return {@code byte[]} bajty po zaszyfrowaniu
+/// @see DES#encryptBlock(byte[])
+/// @see DES#decryptBlock(byte[])
 /// @implNote Funkcja uzywa funkcji {@link DataConverter#addPKCS7DESPadding(byte[])} ktora dopasowuje dane o nieprawidlowym rzmiarze do rozmiaru o 8 bajtow
     public byte[] encrypt(byte[] data){
         byte[] expandedData = DataConverter.addPKCS7DESPadding(data);
@@ -51,6 +53,8 @@ public class TripleDES {
     /// Funkcja do deszyfrowania danych podawanych jako bajtow
     /// @param data dowolne dane podane w bajtach
     /// @return {@code byte[]} bajty po deszyfrowaniu
+    /// @see DES#encryptBlock(byte[])
+    /// @see DES#decryptBlock
     /// @implNote Funkcja uzywa funkcji {@link DataConverter#removePKCS7DESPadding(byte[])} ktora przywraca stan poczatkowy
     public byte[] decrypt(byte[] data){
         byte[] resultData = new byte[data.length];
