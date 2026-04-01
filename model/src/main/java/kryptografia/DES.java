@@ -22,11 +22,9 @@ public class DES {
     private byte[][] subKeys = new byte[16][48];
     ///
     /// Konstruktor ktore laduje haslo do klasy DES dla optymizacji obliczen
-    /// @param password Haslo o rozmiarze 64 bitow
+    /// @param key Haslo o rozmiarze 64 bitow
     /// @implNote W {@link #subKeys} przechowuja sie klucze poszczegolnych rund
-    public DES(String password){
-
-        byte[] key = DataConverter.extract8KeyBytes(password);
+    public DES(byte[] key){
         byte[] keyBits = unpackBits(key);
         byte[] key56 = permute(keyBits,PC1);
         byte[] leftKey = new byte[28];

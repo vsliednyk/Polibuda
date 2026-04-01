@@ -14,7 +14,9 @@
  */
 
 package kryptografia.exceptions.DES;
-
+///
+/// @see kryptografia.exceptions.DES.KDException
+/// @see kryptografia.exceptions.KException
 public class KDNoSHAAlgorythmException extends KDException {
     public KDNoSHAAlgorythmException(String message) {
         super(message);
